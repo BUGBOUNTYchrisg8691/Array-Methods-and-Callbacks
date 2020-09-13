@@ -29,11 +29,19 @@ function getFinals(data) {
 
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
-function getYears( /* code here */ ) {
-
-    /* code here */
-
+function getYears(callback) {
+    const years = [];
+    for (let i = 0; i < callback.length; i++) {
+        years.push(callback[i]['Year']);
+    }
+    return years
 };
+
+console.log(getYears(getFinals(fifaData)));
+
+// function getYears(/* params */) {
+//     // Code goes here
+// }
 
 getYears();
 
