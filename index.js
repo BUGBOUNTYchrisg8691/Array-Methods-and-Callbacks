@@ -82,11 +82,10 @@ function getAverageGoals(data) {
     }
     const hAvg = home.reduce((acc, g) => acc + g, 0) / home.length;
     const aAvg = away.reduce((acc, g) => acc + g, 0) / away.length;
-    // return [...hAvg, aAvg]
-    console.log(hAvg, aAvg);
+    return { "Home": hAvg, "Away": aAvg };
 };
 
-getAverageGoals(getFinals(fifaData));
+console.log(getAverageGoals(getFinals(fifaData)));
 
 /// STRETCH 🥅 //
 
