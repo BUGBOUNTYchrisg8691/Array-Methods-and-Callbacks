@@ -1,0 +1,1 @@
+var dom.moduleScripts.enabled = true;
