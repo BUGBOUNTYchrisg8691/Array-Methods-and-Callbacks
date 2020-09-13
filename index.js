@@ -29,45 +29,17 @@ getFinals(fifaData);
 
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
-// function getYears(callback) {
-//     const years = [];
-//     for (let i = 0; i < callback.length; i++) {
-//         years.push(callback[i]['Year']);
-//     }
-//     return years
-// };
-
-// console.log(getYears(getFinals(fifaData)));
-// console.log(getYears(getFinals(fifaData)).length);
-
-
-function getYears(data, callback) {
-    return [...callback(data).map(i => {
-        return i.Year;
-    })];
+function getYears() {
+    return getFinals(fifaData).map(i => i.Year);
 }
 
-// console.log(getYears(fifaData, getFinals));
-// getYears(fifaData, getFinals);
+console.log(getYears());
 
 /* Task 4: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */
 
-// function getWinners(callback) {
-//     const winners = [];
-//     for (let i = 0; i < callback.length; i++) {
-//         if (callback[i]['Home Team Goals'] < callback[i]['Away Team Goals']) {
-//             winners.push(callback[i]['Away Team Name'])
-//         } else if (callback[i]['Home Team Goals'] > callback[i]['Away Team Goals']) {
-//             winners.push(callback[i]['Home Team Name'])
-//         } else {
-//             winners.push(null);
-//         }
-//     }
-//     return winners;
-// };
 
-function getWinners(data, callback) {
-    return [...callback(data).map(i => {
+function getWinners() {
+    return getFinals(fifaData).map(i => {
         if (i['Home Team Goals'] < i['Away Team Goals']) {
             return i['Away Team Name'];
         } else if (i['Home Team Goals'] > i['Away Team Goals']) {
@@ -75,13 +47,10 @@ function getWinners(data, callback) {
         } else {
             return null;
         }
-    })]
+    })
 }
 
-// console.log(getWinners(fifaData, getFinals));
-
-// console.log(getWinners(getFinals(fifaData)));
-// console.log(getWinners(getFinals(fifaData)).length);
+console.log(getWinners());
 
 /* Task 5: Implement a higher-order function called `getWinnersByYear` that accepts the following parameters and returns a set of strings "In {year}, {country} won the world cup!" 
 
@@ -90,31 +59,34 @@ Parameters:
  * callback function getYears
  */
 
-function getWinnersByYear(data, callback1, callback2) {
-    // const winByYear = new Set();
-    const win = [];
-    const y = [];
-    for (let i = 0; i < callback1.length; i++) {
-        win.push(callback1(data)[i]);
-    }
-    for (let i = 0; i < callback2.length; i++) {
-        y.push(callback2(data)[i]);
-    }
-    return [...win + y]
+function getWinnersByYear(callback1, callback2) {
+    const winners = callback1();
+    const years = callback2();
+    return winners.map((w, i) => {
+        return `In ${years[i]}, ${w} won the World Cup!`;
+    })
 };
 
-// getWinnersByYear(getWinners(fifaData), getYears(fifaData));
-console.log(getWinnersByYear(fifaData, getWinners, getYears));
+console.log(getWinnersByYear(getWinners, getYears));
 
 /* Task 6: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
-function getAverageGoals( /* code here */ ) {
-
-    /* code here */
-
+function getAverageGoals(data) {
+    const home = [];
+    const away = [];
+    for (let i = 0; i < data.length; i++) {
+        home.push(data[i]['Home Team Goals']);
+    }
+    for (let i = 0; i < data.length; i++) {
+        away.push(data[i]['Away Team Goals']);
+    }
+    const hAvg = home.reduce((acc, g) => acc + g, 0) / home.length;
+    const aAvg = away.reduce((acc, g) => acc + g, 0) / away.length;
+    // return [...hAvg, aAvg]
+    console.log(hAvg, aAvg);
 };
 
-getAverageGoals();
+getAverageGoals(getFinals(fifaData));
 
 /// STRETCH 🥅 //
 
