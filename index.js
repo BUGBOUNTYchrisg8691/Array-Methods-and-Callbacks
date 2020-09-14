@@ -151,31 +151,41 @@ function getGoals(data, callback) {
     get finals
     get score of each game
     create object with each team and goals allowed
-    commapre each object value and
+    get total appearances
+    compare each object value and
     returns team with most goals allowed per apearance
 */
 
 function badDefense(data) {
     const finals = getFinals(data);
-    const gAllow = {};
-    finals.forEach(i => {
-        if (i['Home Team Name'] in gAllow && i['Away Team Name'] in gAllow) {
-            gAllow[i['Home Team Name']] = gAllow[i['Home Team Name']] + i['Away Team Goals'];
-            gAllow[i['Away Team Name']] = gAllow[i['Away Team Name']] + i['Home Team Goals'];
-        } else if (i['Home Team Name'] in gAllow && (!(i['Away Team Name'] in gAllow))) {
-            gAllow[i['Home Team Name']] = gAllow[i['Home Team Name']] + i['Away Team Goals'];
-            gAllow[i['Away Team Name']] = i['Home Team Goals'];
-        } else if ((!(i['Home Team Name'] in gAllow)) && (i['Away Team Name'] in gAllow)) {
-            gAllow[i['Away Team Name']] = gAllow[i['Away Team Name']] + i['Home Team Goals'];
-            gAllow[i['Home Team Name']] = i['Away Team Goals'];
-        } else if (!(i['Home Team Name'] in gAllow && (i['Away Team Name'] in gAllow))) {
-            gAllow[i['Away Team Name']] = i['Home Team Goals'];
-            gAllow[i['Home Team Name']] = i['Away Team Goals'];
+    const goalsPerTeam = {};
+    const avgGoals = {};
+    finals.forEach(final => {
+        const homeName = final['Home Team Name'];
+        const awayName = final['Away Team Name'];
+        const homeGoals = final['Home Team Goals'];
+        const awayGoals = final['Away Team Goals'];
+        if (!goalsPerTeam[homeName]) {
+            goalsPerTeam[homeName] = { 'totalGoals': homeGoals, 'appearances': 1 }
+        } else {
+            goalsPerTeam[homeName].totalGoals += homeGoals
+            goalsPerTeam[homeName].appearances++;
+        }
+
+        if (!goalsPerTeam[awayName]) {
+            goalsPerTeam[awayName] = { 'totalGoals': awayGoals, 'appearances': 1 }
+        } else {
+            goalsPerTeam[awayName].totalGoals += awayGoals
+            goalsPerTeam[awayName].appearances++;
         }
     })
-    return gAllow;
+    Object.keys(goalsPerTeam).forEach(team => {
+        avgGoals[team] = goalsPerTeam[team].totalGoals / goalsPerTeam[team].appearances
+    })
+
+    return avgGoals;
 };
 
-console.log(badDefense(fifaData));
-
+// badDefense(fifaData);
+// console.log(badDefense(fifaData));
 /* If you still have time, use the space below to work on any stretch goals of your chosing as listed in the README file. */
