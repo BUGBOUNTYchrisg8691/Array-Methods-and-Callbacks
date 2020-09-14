@@ -93,26 +93,57 @@ function getAverageGoals(data) {
 
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
+/*
+    getCountryWins takes params data and initials
+    get winners
+    get count of winners
+    get countries and country codes and create object with it
+    get count that corresponds to country code
+    returns count of wc wins for country
+*/
 
 function getCountryWins(data, teamInitials) {
-    const initials = {};
-    for (let i = 0; i < data.length; i++) {
-        if (data[i]['Home Team Name'] in initials) {
-            continue;
-        } else {
-            // initials[data[i]['Home Team Name']] = data[i]['Home Team Initials'];
-            initials[data[i]['Home Team Initials']] = data[i]['Home Team Name'];
+    const winners = getWinners();
+    const finals = getFinals(data);
+    let count = 0;
+    const inits = {};
+    finals.forEach(final => {
+        if (!inits[final['Home Team Name']]) {
+            inits[final['Home Team Name']] = final['Home Team Initials']
+        }
+
+        if (!inits[final['Away Team Name']]) {
+            inits[final['Away Team Name']] = final['Away Team Initials']
+        }
+    })
+    let team = Object.keys(inits).filter(function(key) { return inits[key] === teamInitials })[0]
+    for (let i = 0; i < winners.length; i++) {
+        if (winners[i] === team) {
+            count++;
         }
     }
-    return getWinners().reduce(function(acc, i) {
-        if (i === initials[teamInitials]) {
-            acc = acc + 1;
-        }
-        return acc;
-    }, 0);
-};
+    return count;
+}
 
-// console.log(getCountryWins(fifaData, 'ITA'));
+// function getCountryWins(data, teamInitials) {
+//     const initials = {};
+//     for (let i = 0; i < data.length; i++) {
+//         if (data[i]['Home Team Name'] in initials) {
+//             continue;
+//         } else {
+//             // initials[data[i]['Home Team Name']] = data[i]['Home Team Initials'];
+//             initials[data[i]['Home Team Initials']] = data[i]['Home Team Name'];
+//         }
+//     }
+//     return getWinners().reduce(function(acc, i) {
+//         if (i === initials[teamInitials]) {
+//             acc = acc + 1;
+//         }
+//         return acc;
+//     }, 0);
+// };
+
+console.log(getCountryWins(fifaData, 'ITA'));
 // getCountryWins(fifaData, 'ITA');
 
 
