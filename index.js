@@ -117,11 +117,13 @@ function getCountryWins(data, teamInitials) {
 
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
-/*  function takes params data
-    get all finals
-    get amount of goals scored in all wc final appearance for each team and calculate average
-    compare each teams average and return highest
-    returns most average goals per wc final appearance
+/*  
+    function getGoals takes params data
+    get finals
+    get home team, away team, home goals and away goals of each game
+    create object with each team: goals and total appearances
+    compare each object value and
+    returns team with most goals allowed per apearance
 */
 
 function getGoals(data, callback) {
@@ -150,33 +152,21 @@ function getGoals(data, callback) {
     }
 
     Object.keys(goals).forEach(team => {
-            avgGoals[team] = goals[team].goals / goals[team].appearances
-        })
-        // for (let i = 0; i < finals.length; i++) {
-        //     if (finals[i]['Home Team Goals'] in goals) {
-        //         continue;
-        //     } else {
-        //         goals[finals[i]['Home Team Name']] = finals[i]['Home Team Goals'];
-        //     }
-        //     if (finals[i]['Away Team Goals'] in goals) {
-        //         continue;
-        //     } else {
-        //         goals[finals[i]['Away Team Name']] = finals[i]['Away Team Goals'];
-        //     }
-        // }
+        avgGoals[team] = goals[team].goals / goals[team].appearances
+    })
     return Object.keys(goals).reduce((most, next) => goals[most] > goals[next] ? most : next);
 };
+
 // getGoals(fifaData, getFinals);
-console.log(getGoals(fifaData, getFinals));
+// console.log(getGoals(fifaData, getFinals));
 // console.log(getFinals(fifaData));
 
 /* Stretch 4: Write a function called badDefense() that accepts a parameter `data` and calculates the team with the most goals scored against them per appearance (average goals against) in the World Cup finals */
 /*  
     function badDefense takes params data
     get finals
-    get score of each game
-    create object with each team and goals allowed
-    get total appearances
+    get teams and score of each game
+    create object with each team and goals allowed and total appearances
     compare each object value and
     returns team with most goals allowed per apearance
 */
