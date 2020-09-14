@@ -1,7 +1,7 @@
 import { fifaData } from './fifa.js';
-console.log(fifaData);
+// console.log(fifaData);
 
-console.log('its working');
+// console.log('its working');
 // ⚽️ M  V P ⚽️ //
 
 /* Task 1: Investigate the data above. Practice accessing data by console.log-ing the following pieces of data 
@@ -25,7 +25,7 @@ function getFinals(data) {
     return data.filter(d => d.Stage === 'Final');
 };
 
-getFinals(fifaData);
+// getFinals(fifaData);
 
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
@@ -33,7 +33,7 @@ function getYears() {
     return getFinals(fifaData).map(i => i.Year);
 }
 
-console.log(getYears());
+// console.log(getYears());
 
 /* Task 4: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */
 
@@ -50,7 +50,7 @@ function getWinners() {
     })
 }
 
-console.log(getWinners());
+// console.log(getWinners());
 
 /* Task 5: Implement a higher-order function called `getWinnersByYear` that accepts the following parameters and returns a set of strings "In {year}, {country} won the world cup!" 
 
@@ -67,7 +67,7 @@ function getWinnersByYear(callback1, callback2) {
     })
 };
 
-console.log(getWinnersByYear(getWinners, getYears));
+// console.log(getWinnersByYear(getWinners, getYears));
 
 /* Task 6: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
@@ -85,7 +85,7 @@ function getAverageGoals(data) {
     return { "Home": hAvg, "Away": aAvg };
 };
 
-console.log(getAverageGoals(getFinals(fifaData)));
+// console.log(getAverageGoals(getFinals(fifaData)));
 
 /// STRETCH 🥅 //
 
@@ -95,15 +95,30 @@ Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
 function getCountryWins(data, teamInitials) {
-    const count = {};
+    const initials = {};
     for (let i = 0; i < data.length; i++) {
-        let num = data[i];
-        count[num] = count[num] ? count[num] + 1 : 1;
+        if (data[i]['Home Team Name'] in initials) {
+            console.log('in');
+        } else {
+            // initials[data[i]['Home Team Name']] = data[i]['Home Team Initials'];
+            initials[data[i]['Home Team Initials']] = data[i]['Home Team Name'];
+        }
     }
-    return count;
+    let getCount = function(acc, i) {
+        if (i.includes(teamInitials)) {
+            return acc + 1;
+        }
+    }
+    return getWinners().reduce(function(acc, i) {
+        if (i === initials[teamInitials]) {
+            acc = acc + 1;
+        }
+        return acc;
+    }, 0);
 };
 
-console.log(getCountryWins(getWinners(fifaData), 'ITA'));
+// console.log(getCountryWins(fifaData, 'ITA'));
+// getCountryWins(fifaData, 'ITA');
 
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
