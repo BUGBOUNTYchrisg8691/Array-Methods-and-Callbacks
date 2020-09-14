@@ -146,13 +146,36 @@ function getGoals(data, callback) {
 // console.log(getFinals(fifaData));
 
 /* Stretch 4: Write a function called badDefense() that accepts a parameter `data` and calculates the team with the most goals scored against them per appearance (average goals against) in the World Cup finals */
+/*  
+    function badDefense takes params data
+    get finals
+    get score of each game
+    create object with each team and goals allowed
+    commapre each object value and
+    returns team with most goals allowed per apearance
+*/
 
-function badDefense( /* code here */ ) {
-
-    /* code here */
-
+function badDefense(data) {
+    const finals = getFinals(data);
+    const gAllow = {};
+    finals.forEach(i => {
+        if (i['Home Team Name'] in gAllow && i['Away Team Name'] in gAllow) {
+            gAllow[i['Home Team Name']] = gAllow[i['Home Team Name']] + i['Away Team Goals'];
+            gAllow[i['Away Team Name']] = gAllow[i['Away Team Name']] + i['Home Team Goals'];
+        } else if (i['Home Team Name'] in gAllow && (!(i['Away Team Name'] in gAllow))) {
+            gAllow[i['Home Team Name']] = gAllow[i['Home Team Name']] + i['Away Team Goals'];
+            gAllow[i['Away Team Name']] = i['Home Team Goals'];
+        } else if ((!(i['Home Team Name'] in gAllow)) && (i['Away Team Name'] in gAllow)) {
+            gAllow[i['Away Team Name']] = gAllow[i['Away Team Name']] + i['Home Team Goals'];
+            gAllow[i['Home Team Name']] = i['Away Team Goals'];
+        } else if (!(i['Home Team Name'] in gAllow && (i['Away Team Name'] in gAllow))) {
+            gAllow[i['Away Team Name']] = i['Home Team Goals'];
+            gAllow[i['Home Team Name']] = i['Away Team Goals'];
+        }
+    })
+    return gAllow;
 };
 
-badDefense();
+console.log(badDefense(fifaData));
 
 /* If you still have time, use the space below to work on any stretch goals of your chosing as listed in the README file. */
