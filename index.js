@@ -98,15 +98,10 @@ function getCountryWins(data, teamInitials) {
     const initials = {};
     for (let i = 0; i < data.length; i++) {
         if (data[i]['Home Team Name'] in initials) {
-            console.log('in');
+            continue;
         } else {
             // initials[data[i]['Home Team Name']] = data[i]['Home Team Initials'];
             initials[data[i]['Home Team Initials']] = data[i]['Home Team Name'];
-        }
-    }
-    let getCount = function(acc, i) {
-        if (i.includes(teamInitials)) {
-            return acc + 1;
         }
     }
     return getWinners().reduce(function(acc, i) {
@@ -123,14 +118,26 @@ function getCountryWins(data, teamInitials) {
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
-function getGoals( /* code here */ ) {
-
-    /* code here */
-
+function getGoals(data, callback) {
+    const goals = {};
+    const finals = callback(data);
+    for (let i = 0; i < finals.length; i++) {
+        if (finals[i]['Home Team Goals'] in goals) {
+            continue;
+        } else {
+            goals[finals[i]['Home Team Name']] = finals[i]['Home Team Goals'];
+        }
+        if (finals[i]['Away Team Goals'] in goals) {
+            continue;
+        } else {
+            goals[finals[i]['Away Team Name']] = finals[i]['Away Team Goals'];
+        }
+    }
+    return Object.keys(goals).reduce((most, next) => goals[most] > goals[next] ? most : next);
 };
 
-getGoals();
-
+// console.log(getGoals(fifaData, getFinals));
+// console.log(getFinals(fifaData));
 
 /* Stretch 4: Write a function called badDefense() that accepts a parameter `data` and calculates the team with the most goals scored against them per appearance (average goals against) in the World Cup finals */
 
