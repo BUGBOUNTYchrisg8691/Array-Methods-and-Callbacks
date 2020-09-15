@@ -144,28 +144,28 @@ Hint: use `.reduce` */
     returns count of wc wins for country
 */
 
-function getCountryWins(data, teamInitials) {
-    const winners = getWinners();
-    const finals = getFinals(data);
-    let count = 0;
-    const inits = {};
-    finals.forEach(final => {
-        if (!inits[final['Home Team Name']]) {
-            inits[final['Home Team Name']] = final['Home Team Initials']
-        }
+// function getCountryWins(data, teamInitials) {
+//     const winners = getWinners();
+//     const finals = getFinals(data);
+//     let count = 0;
+//     const inits = {};
+//     finals.forEach(final => {
+//         if (!inits[final['Home Team Name']]) {
+//             inits[final['Home Team Name']] = final['Home Team Initials']
+//         }
 
-        if (!inits[final['Away Team Name']]) {
-            inits[final['Away Team Name']] = final['Away Team Initials']
-        }
-    })
-    let team = Object.keys(inits).filter(function(key) { return inits[key] === teamInitials })[0]
-    for (let i = 0; i < winners.length; i++) {
-        if (winners[i] === team) {
-            count++;
-        }
-    }
-    return count;
-}
+//         if (!inits[final['Away Team Name']]) {
+//             inits[final['Away Team Name']] = final['Away Team Initials']
+//         }
+//     })
+//     let team = Object.keys(inits).filter(function(key) { return inits[key] === teamInitials })[0]
+//     for (let i = 0; i < winners.length; i++) {
+//         if (winners[i] === team) {
+//             count++;
+//         }
+//     }
+//     return count;
+// }
 
 // function getCountryWins(data, teamInitials) {
 //     const initials = {};
@@ -185,9 +185,27 @@ function getCountryWins(data, teamInitials) {
 //     }, 0);
 // };
 
-console.log(getCountryWins(fifaData, 'ITA'));
+// console.log(getCountryWins(fifaData, 'ITA'));
 // getCountryWins(fifaData, 'ITA');
 
+function getCountryWins(data, initials) {
+    const finals = getFinals(data);
+    const inits = {};
+    finals.forEach(function(final) {
+        inits[final['Home Team Initials']] = final['Home Team Name'];
+        inits[final['Away Team Initials']] = final['Away Team Name'];
+    });
+    return finals.filter(function(item) {
+        if (item['Win conditions'].toLowerCase().includes(inits[initials].toLowerCase())) {
+            return item;
+        }
+    }).length;
+}
+
+console.log(getCountryWins(fifaData, 'ITA'));
+// console.log(getFinals(fifaData).map(function(item) {
+//     return [item['Home Team Name'], item['Away Team Name']];
+// }))
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 /*  
