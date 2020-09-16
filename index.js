@@ -13,7 +13,7 @@ import { fifaData } from './fifa.js';
 (d) Away Team goals for 2014 world cup final
 (e) Winner of 2014 world cup final */
 const twentyFourteen = fifaData.filter(t => t.Year === 2014).filter(t => t.Stage === 'Final');
-// console.log(twentyFourteen);
+console.log(twentyFourteen);
 // console.log(twentyFourteen[0]['Home Team Name']);
 // console.log(twentyFourteen[0]['Away Team Name']);
 // console.log(twentyFourteen[0]['Home Team Goals']);
@@ -26,7 +26,7 @@ function getFinals(data) {
     return data.filter(d => d.Stage === 'Final');
 };
 
-// getFinals(fifaData);
+getFinals(fifaData);
 
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
@@ -38,7 +38,7 @@ function getYears(callback) {
     return callback(fifaData).map(i => i.Year);
 }
 
-// console.log(getYears(getFinals));
+console.log(getYears(getFinals));
 
 /* Task 4: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */
 
@@ -76,28 +76,28 @@ Parameters:
  * callback function getYears
  */
 
-// function getWinnersByYear(callback1, callback2) {
-//     const winners = callback1();
-//     const years = callback2();
-//     return winners.map((w, i) => {
-//         return `In ${years[i]}, ${w} won the World Cup!`;
-//     })
-// };
+function getWinnersByYear(callback1, callback2) {
+    const winners = callback1();
+    const years = callback2(getFinals);
+    return winners.map((w, i) => {
+        return `In ${years[i]}, ${w} won the World Cup!`;
+    })
+};
 
 // console.log(getWinnersByYear(getWinners, getYears));
 
-function getWinnersByYear(callbA, callbB) {
-    const winners = callbA(getFinals);
-    const years = callbB(getFinals);
-    const byYear = new Set();
-    for (let i = 0; i < winners.length; i++) {
-        byYear.add(`In ${years[i]}, ${winners[i]} won the World Cup!`);
-    }
-    return byYear;
-}
+// function getWinnersByYear(callbA, callbB) {
+//     const winners = callbA(getFinals);
+//     const years = callbB(getFinals);
+//     const byYear = new Set();
+//     for (let i = 0; i < winners.length; i++) {
+//         byYear.add(`In ${years[i]}, ${winners[i]} won the World Cup!`);
+//     }
+//     return byYear;
+// }
 
 console.log(getWinnersByYear(getWinners, getYears));
-console.log(getFinals(fifaData));
+// console.log(getFinals(fifaData));
 /* Task 6: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
 // function getAverageGoals(data) {
@@ -127,7 +127,7 @@ function getAverageGoals(data) {
     }
 }
 
-// console.log(getAverageGoals(fifaData));
+console.log(getAverageGoals(fifaData));
 
 /// STRETCH 🥅 //
 
@@ -208,7 +208,7 @@ function getCountryWins(data, initials) {
     }).length;
 }
 
-// console.log(getCountryWins(fifaData, 'ITA'));
+console.log(getCountryWins(fifaData, 'ITA'));
 // console.log(getFinals(fifaData).map(function(item) {
 //     return [item['Home Team Name'], item['Away Team Name']];
 // }))
@@ -353,7 +353,7 @@ function getGoals(data, callback) {
     return Object.keys(avgGoals).reduce((most, next) => goals[most] > goals[next] ? most : next);
 };
 
-// getGoals(fifaData, getFinals);
+getGoals(fifaData, getFinals);
 // console.log(getGoals(fifaData, getFinals));
 // console.log(getFinals(fifaData));
 
@@ -394,9 +394,9 @@ function badDefense(data) {
         avgGoals[team] = goalsPerTeam[team].totalGoals / goalsPerTeam[team].appearances
     });
 
-    return Object.keys(goals).reduce((most, next) => goals[most] > goals[next] ? most : next);
+    return Object.keys(goalsPerTeam).reduce((most, next) => goalsPerTeam[most] > goalsPerTeam[next] ? most : next);
 };
 
 // badDefense(fifaData);
-// console.log(badDefense(fifaData));
+console.log(badDefense(fifaData));
 /* If you still have time, use the space below to work on any stretch goals of your chosing as listed in the README file. */
