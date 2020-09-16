@@ -326,23 +326,23 @@ function getGoals(data, callback) {
     const avgGoals = {};
     const finals = callback(data);
     for (let i = 0; i < finals.length; i++) {
-        const homeTeam = finals[i]['Home Team Name']
-        const awayTeam = finals[i]['Away Team Name']
-        const homeGoals = finals[i]['Home Team Goals']
-        const awayGoals = finals[i]['Away Team Goals']
+        const homeTeam = finals[i]['Home Team Name'];
+        const awayTeam = finals[i]['Away Team Name'];
+        const homeGoals = finals[i]['Home Team Goals'];
+        const awayGoals = finals[i]['Away Team Goals'];
 
         if (!goals[homeTeam]) {
-            goals[homeTeam] = { 'goals': homeGoals, 'appearances': 1 }
+            goals[homeTeam] = { 'goals': homeGoals, 'appearances': 1 };
         } else {
-            goals[homeTeam].goals += homeGoals
-            goals[homeTeam].appearances++
+            goals[homeTeam].goals += homeGoals;
+            goals[homeTeam].appearances++;
         }
 
         if (!goals[awayTeam]) {
-            goals[awayTeam] = { 'goals': awayGoals, 'appearances': 1 }
+            goals[awayTeam] = { 'goals': awayGoals, 'appearances': 1 };
         } else {
-            goals[awayTeam].goals += awayGoals
-            goals[awayTeam].appearances++
+            goals[awayTeam].goals += awayGoals;
+            goals[awayTeam].appearances++;
         }
     }
 
@@ -377,22 +377,22 @@ function badDefense(data) {
         const homeGoals = final['Home Team Goals'];
         const awayGoals = final['Away Team Goals'];
         if (!goalsPerTeam[homeName]) {
-            goalsPerTeam[homeName] = { 'totalGoals': awayGoals, 'appearances': 1 }
+            goalsPerTeam[homeName] = { 'totalGoals': awayGoals, 'appearances': 1 };
         } else {
-            goalsPerTeam[homeName].totalGoals += awayGoals
+            goalsPerTeam[homeName].totalGoals += awayGoals;
             goalsPerTeam[homeName].appearances++;
         }
 
         if (!goalsPerTeam[awayName]) {
-            goalsPerTeam[awayName] = { 'totalGoals': homeGoals, 'appearances': 1 }
+            goalsPerTeam[awayName] = { 'totalGoals': homeGoals, 'appearances': 1 };
         } else {
-            goalsPerTeam[awayName].totalGoals += homeGoals
+            goalsPerTeam[awayName].totalGoals += homeGoals;
             goalsPerTeam[awayName].appearances++;
         }
     })
     Object.keys(goalsPerTeam).forEach(team => {
         avgGoals[team] = goalsPerTeam[team].totalGoals / goalsPerTeam[team].appearances
-    })
+    });
 
     return Object.keys(goals).reduce((most, next) => goals[most] > goals[next] ? most : next);
 };
