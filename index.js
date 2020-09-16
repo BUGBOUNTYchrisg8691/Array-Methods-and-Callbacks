@@ -43,29 +43,29 @@ function getYears(callback) {
 /* Task 4: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */
 
 
-// function getWinners() {
-//     return getFinals(fifaData).map(i => {
-//         if (i['Home Team Goals'] < i['Away Team Goals']) {
-//             return i['Away Team Name'];
-//         } else if (i['Home Team Goals'] > i['Away Team Goals']) {
-//             return i['Home Team Name'];
-//         } else {
-//             return null;
-//         }
-//     })
-// }
-
-// console.log(getWinners());
-
-function getWinners(callback) {
-    return callback(fifaData).map(item => {
-        if (item['Win conditions'].toLowerCase().includes(item['Home Team Name'].toLowerCase())) {
-            return item['Home Team Name'];
+function getWinners() {
+    return getFinals(fifaData).map(i => {
+        if (i['Home Team Goals'] < i['Away Team Goals']) {
+            return i['Away Team Name'];
+        } else if (i['Home Team Goals'] > i['Away Team Goals']) {
+            return i['Home Team Name'];
         } else {
-            return item['Away Team Name'];
+            return (i['Win conditions'].toLowerCase().includes(i['Home Team Name']) ? i['Home Team Name'] : i['Away Team Name']);
         }
     })
 }
+
+console.log(getWinners());
+
+// function getWinners(callback) {
+//     return callback(fifaData).map(item => {
+//         if (item['Win conditions'].toLowerCase().includes(item['Home Team Name'].toLowerCase())) {
+//             return item['Home Team Name'];
+//         } else {
+//             return item['Away Team Name'];
+//         }
+//     })
+// }
 
 // console.log(getWinners(getFinals));
 
@@ -96,8 +96,8 @@ function getWinnersByYear(callbA, callbB) {
     return byYear;
 }
 
-// console.log(getWinnersByYear(getWinners, getYears));
-
+console.log(getWinnersByYear(getWinners, getYears));
+console.log(getFinals(fifaData));
 /* Task 6: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
 // function getAverageGoals(data) {
@@ -195,14 +195,20 @@ function getCountryWins(data, initials) {
         inits[final['Home Team Initials']] = final['Home Team Name'];
         inits[final['Away Team Initials']] = final['Away Team Name'];
     });
-    return finals.filter(function(item) {
-        if (item['Win conditions'].toLowerCase().includes(inits[initials].toLowerCase())) {
-            return item;
+    return finals.map(function(item) {
+        if (item['Home Team Goals'] < item['Away Team Goals']) {
+            return item['Away Team Initials'];
+        } else if (item['Home Team Goals'] > item['Away Team Goals']) {
+            return item['Home Team Initials'];
+        } else {
+            return null;
         }
+    }).filter(function(item) {
+        return item === initials;
     }).length;
 }
 
-console.log(getCountryWins(fifaData, 'ITA'));
+// console.log(getCountryWins(fifaData, 'ITA'));
 // console.log(getFinals(fifaData).map(function(item) {
 //     return [item['Home Team Name'], item['Away Team Name']];
 // }))
@@ -216,6 +222,37 @@ console.log(getCountryWins(fifaData, 'ITA'));
     compare each object value and
     returns team with most goals allowed per apearance
 */
+
+// function goalsAndApps(data) {
+//     const finals = getFinals(data);
+//     const tot = {};
+//     finals.forEach(item => {
+//         if (item['Home Team Name'] in tot) {
+//             tot[item['Home Team Name']] = { 'goals': tot[item['Home Team Name']].goals + item['Home Team Goals'], 'app': tot[item['Home Team Name']].app + 1 };
+//         } else {
+//             tot[item['Home Team Name']] = { 'goals': item['Home Team Goals'], 'app': 1 };
+//         }
+//     })
+//     finals.forEach(item => {
+//         if (item['Away Team Name'] in tot) {
+//             tot[item['Away Team Name']] = { 'goals': tot[item['Away Team Name']].goals + item['Away Team Goals'], 'app': tot[item['Away Team Name']].app + 1 };
+//         } else {
+//             tot[item['Away Team Name']] = { 'goals': item['Away Team Goals'], 'app': 1 };
+//         }
+//     })
+
+//     return tot;
+// }
+
+// function getGoals2(data) {
+//     const goalsApps = goalsAndApps(data);
+//     const gpa = Object.keys(goalsApps).map(item => {
+//         return goalsApps[item].goals / goalsApps[item].app
+//     });
+//     return gpa;
+// }
+
+console.log(getGoals2(fifaData));
 
 function getGoals(data, callback) {
     const goals = {};
@@ -243,9 +280,9 @@ function getGoals(data, callback) {
     }
 
     Object.keys(goals).forEach(team => {
-        avgGoals[team] = goals[team].goals / goals[team].appearances
+        avgGoals[team] = goals[team].goals / goals[team].appearances;
     })
-    return Object.keys(goals).reduce((most, next) => goals[most] > goals[next] ? most : next);
+    return Object.keys(avgGoals).reduce((most, next) => goals[most] > goals[next] ? most : next);
 };
 
 // getGoals(fifaData, getFinals);
