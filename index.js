@@ -252,72 +252,74 @@ function getCountryWins(data, initials) {
 //     return gpa;
 // }
 
-function getGoals2(data, initials) {
-    const finals = getFinals(data);
+// function getGoals2(data, initials) {
+//     const finals = getFinals(data);
 
-    function getCount(homeOrAway) {
-        const count = [];
-        finals.forEach(item => {
-            const sides = `${homeOrAway} Team Name`;
-            const amt = `${homeOrAway} Team Goals`;
-            for (let i = 0; i < item[amt]; i++) {
-                count.push(item[sides])
-            }
-        });
-        return count;
-    }
-    const goalsH = getCount('Home');
-    const goalsA = getCount('Away');
-    const goalsCount = goalsH.concat(goalsA);
-    const appsCount = []
+//     function getCount(homeOrAway) {
+//         const count = [];
+//         finals.forEach(item => {
+//             const sides = `${homeOrAway} Team Name`;
+//             const amt = `${homeOrAway} Team Goals`;
+//             for (let i = 0; i < item[amt]; i++) {
+//                 count.push(item[sides])
+//             }
+//         });
+//         return count;
+//     }
+//     const goalsH = getCount('Home');
+//     const goalsA = getCount('Away');
+//     const goalsCount = goalsH.concat(goalsA);
+//     const appsCount = []
 
-    finals.forEach(item => {
-        appsCount.push(item['Home Team Name']);
-        appsCount.push(item['Away Team Name']);
-    });
+//     finals.forEach(item => {
+//         appsCount.push(item['Home Team Name']);
+//         appsCount.push(item['Away Team Name']);
+//     });
 
-    function retCount(arr) {
-        const obj = {};
-        for (var i = 0; i < arr.length; i++) {
-            var num = arr[i];
-            obj[num] = obj[num] ? obj[num] + 1 : 1;
-        }
-        return obj;
-    }
-    const goals = retCount(goalsCount);
-    const apps = retCount(appsCount);
-    const avgs = [];
-    for (let i = 0; i < Object.keys(goals).length; i++) {
-        console.log(Object.values(goals)[i] / Object.values(apps)[i]);
-        avgs.push([Object.keys(goals)[i], Object.values(goals)[i] / Object.values(apps)[i]]);
-    }
-    const all = [];
-    for (let i = 0; i < avgs.length; i++) {
-        all.push(avgs[i][1]);
-    }
-    // avgs.forEach(item => {
-    //     k
-    //     // if (item[1] > most[1]) {
-    //     //     most.splice(0, 2);
-    //     //     most.push(item[0]);
-    //     //     most.push(item[1]);
-    //     // } else {
-    //     //     most.push(item[0]);
-    //     //     most.push(item[1]);
-    //     // }
+//     function retCount(arr) {
+//         const obj = {};
+//         for (var i = 0; i < arr.length; i++) {
+//             var num = arr[i];
+//             obj[num] = obj[num] ? obj[num] + 1 : 1;
+//         }
+//         return obj;
+//     }
+//     const goals = retCount(goalsCount);
+//     const apps = retCount(appsCount);
+//     const avgs = [];
+    
 
-    // })
-    for (let i = 0; i < avgs.length; i++) {
-        if (avgs[i][1] === 7) {
-            // return avgs[i][0];
-            // return avgs;
-        }
-    }
-    // return Math.max(...all);
-    return [goals, apps]
-}
+//     // for (let i = 0; i < Object.keys(goals).length; i++) {
+//     //     console.log(Object.values(goals)[i] / Object.values(apps)[i]);
+//     //     avgs.push();
+//     // }
+//     // const all = [];
+//     // for (let i = 0; i < avgs.length; i++) {
+//     //     all.push(avgs[i][1]);
+//     // }
+//     // avgs.forEach(item => {
+//     //     k
+//     //     // if (item[1] > most[1]) {
+//     //     //     most.splice(0, 2);
+//     //     //     most.push(item[0]);
+//     //     //     most.push(item[1]);
+//     //     // } else {
+//     //     //     most.push(item[0]);
+//     //     //     most.push(item[1]);
+//     //     // }
 
-console.log(getGoals2(fifaData));
+//     // })
+//     // for (let i = 0; i < avgs.length; i++) {
+//     //     if (avgs[i][1] === 7) {
+//     //         // return avgs[i][0];
+//     //         // return avgs;
+//     //     }
+//     // }
+//     // return Math.max(...all);
+//     return [goals, apps]
+// }
+
+// console.log(getGoals2(fifaData));
 
 function getGoals(data, callback) {
     const goals = {};
@@ -347,8 +349,8 @@ function getGoals(data, callback) {
     Object.keys(goals).forEach(team => {
         avgGoals[team] = goals[team].goals / goals[team].appearances;
     })
-    return goals;
-    // return Object.keys(avgGoals).reduce((most, next) => goals[most] > goals[next] ? most : next);
+    // return goals;
+    return Object.keys(avgGoals).reduce((most, next) => goals[most] > goals[next] ? most : next);
 };
 
 // getGoals(fifaData, getFinals);
