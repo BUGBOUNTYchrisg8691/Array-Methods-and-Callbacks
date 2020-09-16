@@ -288,7 +288,8 @@ function getGoals2(data, initials) {
     const apps = retCount(appsCount);
     const avgs = [];
     for (let i = 0; i < Object.keys(goals).length; i++) {
-        avgs.push([Object.keys(goals)[i], (Object.values(goals)[i] / Object.values(apps)[i]]));
+        console.log(Object.values(goals)[i] / Object.values(apps)[i]);
+        avgs.push([Object.keys(goals)[i], Object.values(goals)[i] / Object.values(apps)[i]]);
     }
     const all = [];
     for (let i = 0; i < avgs.length; i++) {
